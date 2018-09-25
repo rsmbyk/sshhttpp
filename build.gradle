@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.70'
+    id 'org.jetbrains.kotlin.kapt' version '1.2.70'
+}
+
+group 'com.rsmbyk'
+version '0.1'
+
+repositories {
+    mavenCentral ()
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": 'com.rsmbyk.sshhttpp.App'
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory () ? it : zipTree (it)
+        }
+    }
+}
+
+dependencies {
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.70'
+    compile 'org.jetbrains.kotlin:kotlin-reflect:1.2.70'
+    compile 'io.javalin:javalin:2.2.0'
+    compile 'com.google.dagger:dagger:2.17'
+    kapt 'com.google.dagger:dagger-compiler:2.17'
+    compile 'org.mongodb:mongodb-driver-sync:3.8.2'
+    compile 'org.slf4j:slf4j-simple:1.7.25'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
+    testCompile 'junit:junit:4.12'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
