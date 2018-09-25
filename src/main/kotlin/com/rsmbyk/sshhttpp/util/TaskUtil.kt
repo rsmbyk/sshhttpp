@@ -14,7 +14,9 @@ fun Long.toDate (): Date {
 }
 
 fun String.toDate (): Date =
-    SimpleDateFormat.getDateTimeInstance ().parse (this)
+    split (" ", limit = 2)
+        .last ()
+        .let (SimpleDateFormat ("MMM dd HH:mm:ss yyyy")::parse)
 
 val Any?.nonNullText: String
     get () = if (this == null) "" else toString ()
