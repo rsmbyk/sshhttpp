@@ -29,7 +29,15 @@ object TaskSpooler {
         "tsp $command".runCommand ().toInt ()
 
     private fun getTaskColumn (id: Int, column: Int? = null): String =
-        "tsp | awk '{if ($1 == $id) { print ${column ?: ""} }}'".runCommand ()
+        "tsp".runCommand ()
+            .split ("\n")
+            .first { it.startsWith (id.toString ()) }
+            .run {
+                if (column != null && column in 0..5)
+                    split(Regex("\\s+"), 6)[column-1]
+                else
+                    this
+            }
 
     private fun getTaskInfo (id: Int): String =
         "tsp -i $id".runCommand ()
