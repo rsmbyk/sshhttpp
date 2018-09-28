@@ -20,7 +20,7 @@ class TaskDao (private val col: MongoCollection<Document>, private val codec: Co
         col.find ().toList ().map (codec::toModel)
 
     fun get (id: Int): TaskEntity? =
-            all ().first { it.id == id }
+            all ().firstOrNull { it.id == id }
 
     fun insert (task: TaskEntity) =
         col.insertOne (codec.toDocument (task))
