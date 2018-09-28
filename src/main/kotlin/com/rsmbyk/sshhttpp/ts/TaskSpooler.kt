@@ -15,10 +15,9 @@ object TaskSpooler {
     private const val INFO_END_TIME = "End time"
     private const val INFO_EXECUTION_TIME = "Time run"
 
-    private fun String.runCommand (workingDir: String = "/"): String {
-        val process = ProcessBuilder (*split (" ").toTypedArray ())
-            .directory (File (workingDir))
-            .start ()
+    private fun String.runCommand (): String {
+        val process =
+            ProcessBuilder (*split (" ").toTypedArray ()).start ()
 
         process.waitFor (5, TimeUnit.SECONDS)
         val output = BufferedReader (InputStreamReader (process.inputStream)).readText ()
