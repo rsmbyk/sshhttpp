@@ -1,8 +1,8 @@
 package com.rsmbyk.sshhttpp.ts
 
 import com.rsmbyk.sshhttpp.model.Command
+import com.rsmbyk.sshhttpp.model.Task
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
@@ -10,10 +10,13 @@ import java.util.regex.Pattern
 object TaskSpooler {
 
     private const val INFO_COMMAND = "Command"
+    private const val INFO_STATE = "State"
     private const val INFO_ENQUEUE_TIME = "Enqueue time"
     private const val INFO_START_TIME = "Start time"
     private const val INFO_END_TIME = "End time"
     private const val INFO_EXECUTION_TIME = "Time run"
+    private const val INFO_ERROR_LEVEL = "E-Level"
+    private const val INFO_OUTPUT = "Output"
 
     private fun String.runCommand (): String {
         val process =
@@ -45,31 +48,45 @@ object TaskSpooler {
     private fun getTaskOutput (id: Int): String =
         "tsp -c $id".runCommand ()
 
+    private fun extractTaskInfo (id: Int, info: String?): Map<String, String> {
+        return if (info == null) {
+            mapOf (
+                INFO_STATE to Task.State.INVALID.name.toLowerCase())
+        } else {
+            info.split("\n")
+                .asSequence ()
+                .map { it.split (Pattern.compile (": "), 2) }
+                .map { it[0] to it[1] }
+                .toList ()
+                .toMap ()
+                .toMutableMap ()
+                .apply {
+                    getTaskColumn (id, 2).also {
+                        put (INFO_STATE, it)
+                        if (it == Task.State.FINISHED.name.toLowerCase ()) {
+                            put (INFO_ERROR_LEVEL, getTaskColumn (id, 4))
+                            put (INFO_OUTPUT, getTaskOutput (id))
+                        }
+                    }
+                }
+        }
+    }
+
+
     fun getInfo (id: Int): TaskSpoolerInfo {
-        val map = getTaskInfo(id)
-            .split ("\n")
-            .asSequence ()
-            .map { it.split (Pattern.compile (": "), 2) }
-            .map { it[0] to it[1] }
-            .toList ()
-            .toMap ()
-
-        val state = getTaskColumn (id, 2)
-        val errorLevel = if (state == "finished") getTaskColumn(id, 4).toInt () else null
-        val output = if (state == "finished") getTaskOutput(id) else null
-
-        println (map)
-
-        return TaskSpoolerInfo (
-            id,
-            map.getValue (INFO_COMMAND),
-            state,
-            map.getValue (INFO_ENQUEUE_TIME),
-            map.get (INFO_START_TIME),
-            map.get (INFO_END_TIME),
-            map.get (INFO_EXECUTION_TIME),
-            errorLevel,
-            output
-        )
+        return extractTaskInfo (id, getTaskInfo (id).takeUnless ("Error in wait_server_lines 2"::equals))
+            .run {
+                TaskSpoolerInfo (
+                    id,
+                    getValue (INFO_COMMAND),
+                    getValue (INFO_STATE),
+                    getValue (INFO_ENQUEUE_TIME),
+                    get (INFO_START_TIME),
+                    get (INFO_END_TIME),
+                    get (INFO_EXECUTION_TIME),
+                    get (INFO_ERROR_LEVEL)?.toInt(),
+                    get (INFO_OUTPUT)
+                )
+            }
     }
 }
