@@ -16,7 +16,7 @@ class TaskSpoolerMapper: TaskSpoolerInfoMapper<Task> {
                 id,
                 null,
                 command,
-                Task.State.values ().first { it.text == state },
+                Task.State.valueOf (state.toUpperCase ()).ordinal,
                 enqueueTime.toDate (),
                 startTime?.toDate (),
                 endTime?.toDate (),

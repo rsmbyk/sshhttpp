@@ -1,12 +1,13 @@
 package com.rsmbyk.sshhttpp.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 
 data class Task (
     val id: Int,
     val request: String?,
     val command: String,
-    val state: State,
+    val state: Int,
     val enqueueTime: Date,
     val startTime: Date?,
     val endTime: Date?,
@@ -14,8 +15,12 @@ data class Task (
     val errorLevel: Int?,
     val output: String?) {
 
-    enum class State (val text: String) {
-        FINISHED ("finished"),
-        RUNNING ("running")
+    @JsonIgnore
+    val stateEnum = State.values ()[state]
+
+    enum class State {
+        FINISHED,
+        RUNNING,
+        INVALID
     }
 }
