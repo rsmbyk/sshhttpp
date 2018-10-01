@@ -1,11 +1,12 @@
 package com.rsmbyk.sshhttpp.db.entity
 
+import org.bson.types.ObjectId
+
 data class TaskEntity (
-    val id: Int,
-    val request: String,
-    val command: String,
+    val _id: ObjectId,
     val state: Int,
-    val enqueueTime: Long,
+    val command: String,
+    val enqueueTime: Long?,
     val startTime: Long?,
     val endTime: Long?,
     val executionTime: Double?,

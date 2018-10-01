@@ -8,9 +8,7 @@ import java.util.*
 data class Command (val type: Type, val command: String, val subCommand: String?, val args: Array<Argument>?) {
 
     enum class Type {
-        @JsonProperty ("string")
         STRING,
-        @JsonProperty ("command")
         COMMAND
     }
 

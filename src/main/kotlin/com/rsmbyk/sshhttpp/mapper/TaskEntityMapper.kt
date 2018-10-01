@@ -1,20 +1,22 @@
 package com.rsmbyk.sshhttpp.mapper
 
-import com.rsmbyk.sshhttpp.db.entity.Mapper
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.rsmbyk.sshhttpp.db.entity.EntityMapper
 import com.rsmbyk.sshhttpp.db.entity.TaskEntity
 import com.rsmbyk.sshhttpp.model.Task
 import com.rsmbyk.sshhttpp.util.toDate
+import org.bson.types.ObjectId
 
-class TaskMapper: Mapper<TaskEntity, Task> {
+class TaskEntityMapper (private val objectMapper: ObjectMapper): EntityMapper<TaskEntity, Task> {
 
     override fun toEntity (model: Task): TaskEntity {
         return model.run {
             TaskEntity (
-                id,
-                request!!,
-                command,
-                state,
-                enqueueTime.time,
+                id?.let (::ObjectId) ?: ObjectId.get (),
+                state.ordinal,
+                objectMapper.writeValueAsString (command),
+                enqueueTime?.time,
                 startTime?.time,
                 endTime?.time,
                 executionTime,
@@ -27,11 +29,10 @@ class TaskMapper: Mapper<TaskEntity, Task> {
     override fun toModel (entity: TaskEntity): Task {
         return entity.run {
             Task (
-                id,
-                request,
-                command,
-                state,
-                enqueueTime.toDate (),
+                _id.toHexString (),
+                Task.State.values ()[state],
+                objectMapper.readValue (command),
+                enqueueTime?.toDate (),
                 startTime?.toDate (),
                 endTime?.toDate (),
                 executionTime,

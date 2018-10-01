@@ -6,9 +6,7 @@ import com.rsmbyk.sshhttpp.util.nonNullText
 data class Argument (val hyphen: Hyphen?, val option: String?, val parameter: String?) {
 
     enum class Hyphen (val text: String) {
-        @JsonProperty ("single")
         SINGLE ("-"),
-        @JsonProperty ("double")
         DOUBLE ("--")
     }
 

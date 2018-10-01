@@ -25,6 +25,7 @@ class App {
             path (PATH_TASKS) {
                 get (taskController::all)
                 post (taskController::create)
+                delete (taskController::drop)
                 path (PATH_TASKS_ID) {
                     get (taskController::get)
                 }

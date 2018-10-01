@@ -1,17 +1,17 @@
 package com.rsmbyk.sshhttpp.db.codec
 
+import com.rsmbyk.sshhttpp.db.entity.Codec
 import com.rsmbyk.sshhttpp.db.entity.TaskEntity
 import org.bson.Document
 
 class TaskEntityCodec: Codec<TaskEntity> {
 
-    override fun toDocument (model: TaskEntity): Document {
-        return model.run {
+    override fun toDocument (entity: TaskEntity): Document {
+        return entity.run {
             Document ()
-                .append ("id", id)
-                .append ("request", request)
-                .append ("command", command)
+                .append ("_id", _id)
                 .append ("state", state)
+                .append ("command", command)
                 .append ("enqueueTime", enqueueTime)
                 .append ("startTime", startTime)
                 .append ("endTime", endTime)
@@ -21,13 +21,12 @@ class TaskEntityCodec: Codec<TaskEntity> {
         }
     }
 
-    override fun toModel (document: Document): TaskEntity {
+    override fun toEntity (document: Document): TaskEntity {
         return document.run {
             TaskEntity (
-                getInteger ("id"),
-                getString ("request"),
-                getString ("command"),
+                getObjectId ("_id"),
                 getInteger ("state"),
+                getString ("command"),
                 getLong ("enqueueTime"),
                 getLong ("startTime"),
                 getLong ("endTime"),
