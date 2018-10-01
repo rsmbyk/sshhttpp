@@ -13,7 +13,7 @@ class TaskJobMapper (private val objectMapper: ObjectMapper): JobMapper<JobInput
 
     override fun toJob (model: Task): JobInput {
         return model.run {
-            JobInput(
+            JobInput (
                 TSP.LABEL_PREFIX + id,
                 command.toString (),
                 objectMapper.writeValueAsString (command)

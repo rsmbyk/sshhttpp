@@ -2,7 +2,7 @@ package com.rsmbyk.sshhttpp.db.entity
 
 import org.bson.types.ObjectId
 
-data class TaskEntity (
+class TaskEntity (
     val _id: ObjectId,
     val state: Int,
     val command: String,
@@ -11,5 +11,5 @@ data class TaskEntity (
     val endTime: Long?,
     val executionTime: Double?,
     val errorLevel: Int?,
-    val output: String?
-): Entity
+    val output: String?)
+        : Entity

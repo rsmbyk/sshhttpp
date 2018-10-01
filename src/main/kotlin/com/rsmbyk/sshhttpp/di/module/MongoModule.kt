@@ -3,14 +3,13 @@ package com.rsmbyk.sshhttpp.di.module
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
-import com.mongodb.MongoCredential
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
-import com.rsmbyk.sshhttpp.db.entity.Codec
 import com.rsmbyk.sshhttpp.db.codec.TaskEntityCodec
 import com.rsmbyk.sshhttpp.db.dao.TaskDao
+import com.rsmbyk.sshhttpp.db.entity.Codec
 import com.rsmbyk.sshhttpp.db.entity.TaskEntity
 import com.rsmbyk.sshhttpp.model.Prop
 import dagger.Module
@@ -26,17 +25,9 @@ class MongoModule {
             "mongodb://${prop.DATABASE_HOST}:${prop.DATABASE_PORT}")
 
     @Provides
-    fun provideMongoCredential (prop: Prop): MongoCredential =
-        MongoCredential.createCredential (
-            prop.DATABASE_USERNAME,
-            prop.DATABASE_NAME,
-            prop.DATABASE_PASSWORD.toCharArray ())
-
-    @Provides
-    fun provideMongoClientSettings (conn: ConnectionString, credential: MongoCredential): MongoClientSettings =
+    fun provideMongoClientSettings (conn: ConnectionString): MongoClientSettings =
         MongoClientSettings.builder ()
             .applyConnectionString (conn)
-//            .credential (credential)
             .build ()
 
     @Provides
@@ -56,6 +47,6 @@ class MongoModule {
         TaskEntityCodec ()
 
     @Provides
-    fun provideTaskDao (col: MongoCollection<Document>, codec: Codec<TaskEntity>, mapper: ObjectMapper) =
-            TaskDao(col, codec, mapper)
+    fun provideTaskDao (col: MongoCollection<Document>, codec: Codec<TaskEntity>) =
+        TaskDao (col, codec)
 }

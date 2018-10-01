@@ -11,5 +11,5 @@ class TaskResponse (
     val endTime: Date?,
     val executionTime: Double?,
     val errorLevel: Int?,
-    val output: String?
-): Response
+    val output: String?)
+        : Response

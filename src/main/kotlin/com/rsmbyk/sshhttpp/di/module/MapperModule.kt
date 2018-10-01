@@ -26,13 +26,14 @@ class MapperModule {
 
     @Provides
     fun provideObjectMapper (): ObjectMapper {
-        return jacksonObjectMapper().apply {
+        return jacksonObjectMapper ().apply {
             configure (DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true)
         }
     }
 
     @Provides
-    fun provideArgumentRequestMapper (): RequestMapper<ArgumentRequest, Argument> =
+    fun provideArgumentRequestMapper ()
+            : RequestMapper<ArgumentRequest, Argument> =
         ArgumentRequestMapper ()
 
     @Provides
@@ -47,7 +48,7 @@ class MapperModule {
 
     @Provides
     fun provideTaskEntityMapper (objectMapper: ObjectMapper): EntityMapper<TaskEntity, Task> =
-            TaskEntityMapper (objectMapper)
+        TaskEntityMapper (objectMapper)
 
     @Provides
     fun provideJobInputMapper (objectMapper: ObjectMapper): JobMapper<JobInput, JobOutput, Task> =

@@ -2,7 +2,6 @@ package com.rsmbyk.sshhttpp.model
 
 import java.util.*
 
-
 class Prop (private val prop: Properties) {
 
     companion object {

@@ -35,6 +35,10 @@ class App {
 
     companion object {
 
+        const val PATH_ROOT = ""
+        const val PATH_TASKS = "tasks"
+        const val PATH_TASKS_ID = ":id"
+
         @JvmStatic
         fun main (args: Array<String>) {
             val app = App ()

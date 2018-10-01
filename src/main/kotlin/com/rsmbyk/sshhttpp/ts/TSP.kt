@@ -6,7 +6,6 @@ import com.rsmbyk.sshhttpp.ts.entity.JobOutput
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
-import java.util.regex.Pattern
 
 class TSP {
 
@@ -40,7 +39,7 @@ class TSP {
         if (action != null && action.isLetter ())
             command = "$command -$action"
         if (args.isNotEmpty ())
-            command = command.plus (args.joinToString(" ", " "))
+            command = command.plus (args.joinToString (" ", " "))
         return command.runCommand ()
     }
 
@@ -48,7 +47,7 @@ class TSP {
         tsp ('l').split ("\n").drop (1)
 
     fun add (input: JobInput): JobOutput {
-        tsp('L', input.label, input.command).toInt()
+        tsp ('L', input.label, input.command).toInt ()
         return input.run {
             JobOutput (
                 input.label,
@@ -116,7 +115,7 @@ class TSP {
                 get (INFO_START_TIME),
                 get (INFO_END_TIME),
                 get (INFO_EXECUTION_TIME),
-                get (INFO_ERROR_LEVEL)?.toInt(),
+                get (INFO_ERROR_LEVEL)?.toInt (),
                 get (INFO_OUTPUT)
             )
         }

@@ -1,10 +1,8 @@
 package com.rsmbyk.sshhttpp.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import org.bson.types.ObjectId
 import java.util.*
 
-data class Task (
+class Task (
     val id: String?,
     val state: State,
     val command: Command,

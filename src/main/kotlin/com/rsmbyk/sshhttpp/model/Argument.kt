@@ -1,9 +1,8 @@
 package com.rsmbyk.sshhttpp.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.rsmbyk.sshhttpp.util.nonNullText
 
-data class Argument (val hyphen: Hyphen?, val option: String?, val parameter: String?) {
+class Argument (private val hyphen: Hyphen?, private val option: String?, private val parameter: String?) {
 
     enum class Hyphen (val text: String) {
         SINGLE ("-"),

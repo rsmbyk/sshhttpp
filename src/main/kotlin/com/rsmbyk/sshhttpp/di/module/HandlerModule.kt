@@ -23,6 +23,10 @@ import dagger.Provides
 class HandlerModule {
 
     @Provides
+    fun provideHandler (prop: Prop): Handler =
+        Handler (prop)
+
+    @Provides
     fun provideTaskController (
         dao: TaskDao,
         tsp: TSP,
@@ -30,11 +34,7 @@ class HandlerModule {
         requestMapper: RequestMapper<TaskRequest, Task>,
         responseMapper: ResponseMapper<TaskResponse, Task>,
         entityMapper: EntityMapper<TaskEntity, Task>,
-        inputMapper: JobMapper<JobInput, JobOutput, Task>)
+        jobMapper: JobMapper<JobInput, JobOutput, Task>)
             : TaskController =
-        TaskController (dao, tsp, objectMapper, requestMapper, responseMapper, entityMapper, inputMapper)
-
-    @Provides
-    fun provideHandler (prop: Prop): Handler =
-        Handler (prop)
+        TaskController (dao, tsp, objectMapper, requestMapper, responseMapper, entityMapper, jobMapper)
 }

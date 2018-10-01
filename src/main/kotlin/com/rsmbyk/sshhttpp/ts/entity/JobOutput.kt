@@ -1,6 +1,6 @@
 package com.rsmbyk.sshhttpp.ts.entity
 
-data class JobOutput (
+class JobOutput (
     override val label: String,
     val state: String,
     override val command: String,

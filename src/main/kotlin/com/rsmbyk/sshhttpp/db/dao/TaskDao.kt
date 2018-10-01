@@ -1,13 +1,12 @@
 package com.rsmbyk.sshhttpp.db.dao
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.model.Filters
 import com.rsmbyk.sshhttpp.db.entity.Codec
 import com.rsmbyk.sshhttpp.db.entity.TaskEntity
 import org.bson.Document
 
-class TaskDao (private val col: MongoCollection<Document>, private val codec: Codec<TaskEntity>, private val mapper: ObjectMapper) {
+class TaskDao (private val col: MongoCollection<Document>, private val codec: Codec<TaskEntity>) {
 
     fun all (): List<TaskEntity> =
         col.find ().toList ().map (codec::toEntity)
